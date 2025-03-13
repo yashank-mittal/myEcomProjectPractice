@@ -8,6 +8,9 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import com.example.myEcomProjectPractice.Models.User;
+
 import java.util.HashMap;
 
 import io.jsonwebtoken.Claims;
@@ -41,7 +44,8 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails) {
         Map<String,Object> claims = new HashMap<>();
-        return createToken(claims,userDetails.getUsername());
+        User user = (User) userDetails;
+        return createToken(claims,user.getUsername());
     }
 
     private String createToken(Map<String, Object> claims, String name) {

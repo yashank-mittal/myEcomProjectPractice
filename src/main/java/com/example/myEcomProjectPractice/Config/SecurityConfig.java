@@ -1,5 +1,6 @@
 package com.example.myEcomProjectPractice.Config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,68 +22,59 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.example.myEcomProjectPractice.Repo.UserRepo;
 import com.example.myEcomProjectPractice.Services.JwtService;
 
-import lombok.RequiredArgsConstructor;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    
-    private final UserRepo userRepo;
+    private final UserRepo userRepository;
     private final JwtService jwtService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
-    {
-        return http
-        .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/").permitAll()
-            .requestMatchers("/images/**").permitAll()
-            .requestMatchers("/index.html").permitAll()
-            .requestMatchers(HttpMethod.GET,"/api/products/**").permitAll()
-            .requestMatchers("/api/auth/**").permitAll()
-            .requestMatchers("/api/auth/change-password").authenticated()
-            .anyRequest().authenticated()
-        )
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class)
-        .build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth-> auth
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/index.html").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                        .requestMatchers("/api/auth/change-password").authenticated()
+
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+                return http.build();
     }
 
     @Bean
-    public JwtAuthFilter jwtAuthFilter()
-    {
-        return new JwtAuthFilter(jwtService,userDetailsService());
+    public JwtAuthenticationFilter jwtAuthenticationFilter(){
+        return new JwtAuthenticationFilter(jwtService, userDetailsService());
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder()
-    {
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
     @Bean
-    public AuthenticationManager autheManger(AuthenticationConfiguration config) throws Exception
-    {
-        return config.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception{
+        return authConfig.getAuthenticationManager();
     }
-
     @Bean
-    public UserDetailsService userDetailsService()
-    {
-        return username -> (UserDetails) userRepo.findByEmail(username)
-        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public UserDetailsService userDetailsService(){
+        return username -> (UserDetails) userRepository.findByEmail(username)
+                .orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
-
     @Bean
-    public DaoAuthenticationProvider authenticationProvider()
-    {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
+    public DaoAuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
-    
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class CartItemDTO {
     private Long id;
-    private long productId;
-    @Positive(message = "Cart Item quantity must be positive")
+    private Long productId;
+    @Positive
     private Integer quantity;
 }

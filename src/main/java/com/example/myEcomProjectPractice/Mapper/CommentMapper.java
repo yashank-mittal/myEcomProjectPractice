@@ -8,11 +8,9 @@ import com.example.myEcomProjectPractice.Models.Comment;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
-    
-    @Mapping(source = "user.userId", target = "userId")
-    CommentDTO tCommentDTO(Comment comment);
-
-    @Mapping(source = "userId", target = "user.userId")
-    @Mapping(target = "product.prodId",ignore = true)
-    Comment toCommentEntity(CommentDTO commentDTO);
+    @Mapping(target = "userId",source = "user.id")
+    CommentDTO toDTO(Comment comment);
+    @Mapping(target = "user.id", source = "userId")
+    @Mapping(target = "product", ignore = true)
+    Comment toEntity(CommentDTO commentDTO);
 }

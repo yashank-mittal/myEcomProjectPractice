@@ -1,18 +1,13 @@
 package com.example.myEcomProjectPractice.Models;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,13 +16,14 @@ import lombok.NoArgsConstructor;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long prodId;
-    private String prod_name;
-    private String prod_desc;
-    private BigDecimal prod_price;
-    private Integer prod_quantity;
-    private String imageUrl;
+    private Long id;
+    private String name;
+    private String description;
+    private BigDecimal price;
+    private Integer quantity;
+    private String image; //add image
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
+
 }

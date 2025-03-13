@@ -1,16 +1,16 @@
 package com.example.myEcomProjectPractice.DTO;
 
-import java.math.BigDecimal;
-
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
-public class OrderItemDto {
-    private long id;
+public class OrderItemDTO {
+    private Long id;
     private Long productId;
-    @Positive(message = "Order Itemm quantity must be positive")
+    @Positive
     private Integer quantity;
-    @Positive(message = "Order Item price must be positive")
+    @Positive
     private BigDecimal price;
 }

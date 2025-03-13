@@ -1,35 +1,34 @@
 package com.example.myEcomProjectPractice.Mapper;
 
-import java.util.List;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.example.myEcomProjectPractice.DTO.OrderDTO;
-import com.example.myEcomProjectPractice.DTO.OrderItemDto;
+import com.example.myEcomProjectPractice.DTO.OrderItemDTO;
+import com.example.myEcomProjectPractice.Models.Order;
 import com.example.myEcomProjectPractice.Models.OrderItem;
-import com.example.myEcomProjectPractice.Models.Orders;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
+    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "orderItems", source = "items")
+    OrderDTO toDTO(Order order);
 
-    @Mapping(source = "user.userId",target = "userId")
-    @Mapping(source = "orderItem", target = "orderItem")
-    OrderDTO toDto(Orders orders);
+    @Mapping(target = "user.id", source = "userId")
+    @Mapping(target = "items", source = "orderItems")
+    Order toEntity(OrderDTO orderDTO);
 
-    @Mapping(source = "userId", target = "user.userId")
-    @Mapping(source = "orderItem", target = "orderItem") 
-    Orders toEntity(OrderDTO orderDTO);
+    List<OrderDTO> toDTOs(List<Order> orders);
+    List<Order> toEntities(List<OrderDTO> orderDTOS);
+    @Mapping(target = "productId", source = "product.id")
+    OrderItemDTO toOrderItemDTO(OrderItem orderItem);
+    @Mapping(target = "product.id", source = "productId")
+    OrderItem toOrderItemEntity(OrderItemDTO orderItemDTO);
 
-    List<OrderDTO> toDtoList(List<Orders> ordersList);
-    List<Orders> toEntityList(List<OrderDTO> orderDTOList);
-    
-    @Mapping(source = "product.prodId", target = "productId")
-    OrderItemDto tOrderItemDto(OrderItem orderItem);
+    List<OrderItemDTO> toOrderItemDTOs(List<OrderItem> orderItem);
+    List<OrderItem> toOrderItemEntities(List<OrderItemDTO> orderItemDTO);
 
-    @Mapping(source = "productId", target = "product.prodId")
-    OrderItem toOrderItemEntity(OrderItemDto orderItemDto);
 
-    List<OrderItemDto> tOrderItemDtos(List<OrderItem> orderItems);  
-    List<OrderItem> toOrderItemEntities(List<OrderItemDto> orderItemDtos);
 }

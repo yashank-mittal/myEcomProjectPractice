@@ -1,24 +1,24 @@
 package com.example.myEcomProjectPractice.DTO;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @Data
 public class ProductDTO {
-    private Long prodId;
+    private Long id;
     @NotBlank(message = "Product name is required")
-    private String prod_name;
-    @NotBlank(message = "Product Description is required")
-    private String prod_desc;
-    @Positive(message = "Product price must be positive")
-    private BigDecimal prod_price;
-    @PositiveOrZero(message = "Product quantity must be positive or zero")
-    private Integer prod_quantity;
+    private String name;
+    @NotBlank(message = "Product description is required")
+    private String description;
+    @Positive(message = "Cannot be negative")
+    private BigDecimal price;
+    @PositiveOrZero(message = "Cannot be negative")
+    private Integer quantity;
+    private String image; //add image
     private List<CommentDTO> comments;
-    private String imageUrl;
 }

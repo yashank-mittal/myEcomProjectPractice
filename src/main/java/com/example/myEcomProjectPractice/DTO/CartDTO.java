@@ -1,12 +1,12 @@
 package com.example.myEcomProjectPractice.DTO;
 
-import java.util.List;
-
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class CartDTO {
-    private Long cartId;
-    private Long userId;
-    private List<CartItemDTO> Items;
+    private Long id;
+    private Long userId; //usedId
+    private List<CartItemDTO> items;
 }

@@ -1,5 +1,6 @@
 package com.example.myEcomProjectPractice.Mapper;
 
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -10,19 +11,14 @@ import com.example.myEcomProjectPractice.Models.CartItem;
 
 @Mapper(componentModel = "spring")
 public interface CartMapper {
+    @Mapping(target = "userId", source = "user.id")
+    CartDTO toDTO(Cart Cart);
+    @Mapping(target="user.id", source = "userId")
+    Cart toEntity(CartDTO cartDTO);
 
-    @Mapping(source = "user.userId", target = "userId")
-    CartDTO toCartDTO(Cart cart);
+    @Mapping(target="productId", source="product.id")
+    CartItemDTO toDTO(CartItem cartItem);
 
-    @Mapping(source = "userId", target = "user.userId")
-    Cart toCartEntity(CartDTO cartDTO);
-
-   // CartMapper INSTANCE = Mappers.getMapper(CartMapper.class);
-
-   // CartItem Mapping
-   @Mapping(source = "product.prodId", target = "productId")
-   CartItemDTO toCartItemDTO(CartItem cartItem);
-
-   @Mapping(source = "productId", target = "product.prodId")
-   CartItem toCartItemEntity(CartItemDTO cartItemDTO);
+    @Mapping(target="product.id", source="productId")
+    CartItem toEntity(CartItemDTO cartItemDTO);
 }

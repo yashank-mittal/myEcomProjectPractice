@@ -3,6 +3,8 @@ package com.example.myEcomProjectPractice.Services;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.myEcomProjectPractice.DTO.ProductDTO;
@@ -13,10 +15,10 @@ import jakarta.transaction.Transactional;
 public interface ProductService {
  
     @Transactional
-    public ProductDTO createProduct(ProductDTO productDTO,MultipartFile image) throws IOException;
+    public ProductDTO createProduct(ProductDTO productDTO, MultipartFile image) throws IOException;
 
     @Transactional
-    public ProductDTO updateProduct(Long id,ProductDTO productDTO,MultipartFile image) throws IOException;
+    public ProductDTO updateProduct(Long id, ProductDTO productDTO, MultipartFile image) throws IOException;
 
     @Transactional
     public void deleteProduct(Long id);
@@ -25,5 +27,5 @@ public interface ProductService {
     public ProductDTO getProduct(Long id);
 
     @Transactional
-    public List<ProductListDTO> getAllProducts();
+    public Page<ProductListDTO> getAllProducts(Pageable pageable);
 }
